@@ -3,7 +3,7 @@
 import os
 
 try:
-  import _winreg as registry
+  import winreg as registry
 except ImportError:
   registry = None
 

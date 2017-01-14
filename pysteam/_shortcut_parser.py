@@ -10,7 +10,7 @@ import sys
 import os
 import re
 
-from model import Shortcut
+from .model import Shortcut
 
 class ShortcutParser(object):
 
@@ -24,7 +24,7 @@ class ShortcutParser(object):
     return self.match_base(file_contents)
 
   def match_base(self,string):
-    match = re.match(ur"\u0000shortcuts\u0000(.*)\u0008\u0008$",string, re.IGNORECASE)
+    match = re.match("\u0000shortcuts\u0000(.*)\u0008\u0008$",string, re.IGNORECASE)
     if match:
         return self.match_array_string(match.groups()[0])
     else:
@@ -39,7 +39,7 @@ class ShortcutParser(object):
     # ignoring it for now
     shortcuts = []
     while True:
-      match = re.match(ur"(.*)\u0000[0-9]+\u0000(\u0001AppName.*)\u0008",string, re.IGNORECASE)
+      match = re.match("(.*)\u0000[0-9]+\u0000(\u0001AppName.*)\u0008",string, re.IGNORECASE)
       if match:
         groups = match.groups()
         string = groups[0]
@@ -53,7 +53,7 @@ class ShortcutParser(object):
     # for the shortcut string (Appname, Exe, StartDir, etc), as oppposed
     # to matching for general Key-Value pairs. This could possibly create a
     # lot of work for me later, but for now it will get the job done
-    match = re.match(ur"\u0001AppName\u0000(.*)\u0000\u0001Exe\u0000(.*)\u0000\u0001StartDir\u0000(.*)\u0000\u0001icon\u0000(.*)\u0000\u0000tags\u0000(.*)\u0008",string, re.IGNORECASE)
+    match = re.match("\u0001AppName\u0000(.*)\u0000\u0001Exe\u0000(.*)\u0000\u0001StartDir\u0000(.*)\u0000\u0001icon\u0000(.*)\u0000\u0000tags\u0000(.*)\u0008",string, re.IGNORECASE)
     if match:
       # The 'groups' that are returned by the match should be the data
       # contained in the file. Now just make a Shortcut out of that data
@@ -70,7 +70,7 @@ class ShortcutParser(object):
   def match_tags_string(self,string):
     tags = []
     while True:
-      match = re.match(ur"(.*)\u0001[0-9]+\u0000(.*?)\u0000",string)
+      match = re.match("(.*)\u0001[0-9]+\u0000(.*?)\u0000",string)
       if match:
         groups = match.groups()
         string = groups[0]

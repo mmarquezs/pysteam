@@ -9,10 +9,10 @@ Copyright (c) 2013 Scott Rice. All rights reserved.
 import sys
 import os
 
-x00 = u'\x00'
-x01 = u'\x01'
-x08 = u'\x08'
-x0a = u'\x0a'
+x00 = '\x00'
+x01 = '\x01'
+x08 = '\x08'
+x0a = '\x0a'
 
 class ShortcutGenerator(object):
 
@@ -20,7 +20,7 @@ class ShortcutGenerator(object):
         string = x00 + 'shortcuts' + x00 + self.generate_array_string(shortcuts) + x08 + x08 + x0a
         # rstrip is to remove the eol character that is automatically added.
         # According to vim the files I got from steam don't have the eol character
-        return unicode(string).rstrip()
+        return str(string).rstrip()
     
     def generate_array_string(self,shortcuts):
         string = ""

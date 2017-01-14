@@ -4,10 +4,10 @@ import collections
 import os
 import platform
 
-import paths
-import winutils
+from . import paths
+from . import winutils
 
-from model import LocalUserContext, Steam
+from .model import LocalUserContext, Steam
 
 def get_steam():
   """
@@ -52,8 +52,8 @@ def local_user_ids(steam):
   # subdirectory for every user which has logged into this system (and
   # therefore that Steam has data for)
   return os.listdir(steam.userdata_directory)
-  
+
 def local_user_contexts(steam):
   if steam is None:
     return None
-  return map(lambda uid: LocalUserContext(steam, uid), local_user_ids(steam))
+  return [LocalUserContext(steam, uid) for uid in local_user_ids(steam)]
