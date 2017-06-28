@@ -11,6 +11,8 @@ import struct
 import os
 import re
 
+from six import u
+
 from .model import Shortcut
 
 class ShortcutParser(object):
@@ -55,18 +57,18 @@ class ShortcutParser(object):
     # to matching for general Key-Value pairs. This could possibly create a
     # lot of work for me later, but for now it will get the job done
     pattern = (
-        ur"\u0001AppName\u0000(.*)\u0000"                               # groups[0]  appname
-        ur"\u0001exe\u0000(.*)\u0000"                                   # groups[1]  exe
-        ur"\u0001StartDir\u0000(.*)\u0000"                              # groups[2]  startdir
-        ur"\u0001icon\u0000(.*)\u0000"                                  # groups[3]  icon
-        ur"\u0001ShortcutPath\u0000(.*)\u0000"                          # groups[4]  shortcut path
-        ur"\u0001LaunchOptions\u0000(.*)\u0000"                         # groups[5]  launch options
-        ur"\u0002IsHidden\u0000(\u0000|\u0001)(?:\u0000){3}"            # groups[6]  hidden
-        ur"\u0002AllowDesktopConfig\u0000(\u0000|\u0001)(?:\u0000){3}"  # groups[7]  allow_desktop_config
-        ur"\u0002OpenVR\u0000(\u0000|\u0001)(?:\u0000){3}"              # groups[8]  open_vr
-        ur"\u0002LastPlayTime\u0000(.{4})"                              # groups[9]  last_play_time
-        ur"\u0000tags\u0000(.*)"                                        # groups[10] tags
-        ur"\u0008"                                                      # end
+        u(r"\u0001AppName\u0000(.*)\u0000"),                               # groups[0]  appname
+        u(r"\u0001exe\u0000(.*)\u0000"),                                   # groups[1]  exe
+        u(r"\u0001StartDir\u0000(.*)\u0000"),                              # groups[2]  startdir
+        u(r"\u0001icon\u0000(.*)\u0000"),                                  # groups[3]  icon
+        u(r"\u0001ShortcutPath\u0000(.*)\u0000"),                          # groups[4]  shortcut path
+        u(r"\u0001LaunchOptions\u0000(.*)\u0000"),                         # groups[5]  launch options
+        u(r"\u0002IsHidden\u0000(\u0000|\u0001)(?:\u0000){3}"),            # groups[6]  hidden
+        u(r"\u0002AllowDesktopConfig\u0000(\u0000|\u0001)(?:\u0000){3}"),  # groups[7]  allow_desktop_config
+        u(r"\u0002OpenVR\u0000(\u0000|\u0001)(?:\u0000){3}"),              # groups[8]  open_vr
+        u(r"\u0002LastPlayTime\u0000(.{4})"),                              # groups[9]  last_play_time
+        u(r"\u0000tags\u0000(.*)"),                                        # groups[10] tags
+        u(r"\u0008"),                                                      # end
     )
     match = re.match(pattern, string, re.IGNORECASE)
     if match:
