@@ -24,7 +24,7 @@ class TestSteam(unittest.TestCase):
 
   def _make_folders_in_temp_directory_for_ids(self, uids):
     assert(os.path.exists(self.tempdir))
-    paths = map(lambda uid: os.path.join(self.tempdir, uid), uids)
+    paths = [os.path.join(self.tempdir, uid) for uid in uids]
     for path in paths:
       os.mkdir(path)
 

@@ -1,10 +1,10 @@
 # encoding: utf-8
 
-import paths
+from . import paths
 
-from _crc_algorithms import Crc
-from _shortcut_generator import ShortcutGenerator
-from _shortcut_parser import ShortcutParser
+from ._crc_algorithms import Crc
+from ._shortcut_generator import ShortcutGenerator
+from ._shortcut_parser import ShortcutParser
 
 def shortcut_app_id(shortcut):
   """
