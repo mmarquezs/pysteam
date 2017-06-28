@@ -43,7 +43,7 @@ class ShortcutGenerator(object):
         string += self.generate_keyvalue_pair_bool("IsHidden", shortcut.hidden)
         string += self.generate_keyvalue_pair_bool("AllowDesktopConfig", shortcut.allow_desktop_config)
         string += self.generate_keyvalue_pair_bool("OpenVR", shortcut.open_vr)
-        string += self.generate_keyvalue_pair_int("LastPlayTime", shortcut.last_play_time)
+        string += self.generate_keyvalue_pair_int("LastPlayTime", shortcut.last_play_time).decode("utf-8")
 
         # Tags seem to be a special case. It seems to be a key-value pair just
         # like all the others, except it doesnt start with a x01 character. It
@@ -65,7 +65,8 @@ class ShortcutGenerator(object):
         return x02 + key + x00 + (x01 if value else x00) + x00 + x00 + x00
 
     def generate_keyvalue_pair_int(self, key, value):
-        return x02 + key + x00 + struct.pack('<i', value)
+        # print(type(value))
+        return bytes(x02 + key + x00,"utf-8")  + struct.pack('<i', value)
 
     def generate_tags_string(self,tags):
         string = x00 + "tags" + x00

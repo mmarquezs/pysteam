@@ -56,25 +56,51 @@ class ShortcutParser(object):
     # for the shortcut string (Appname, Exe, StartDir, etc), as opposed
     # to matching for general Key-Value pairs. This could possibly create a
     # lot of work for me later, but for now it will get the job done
-    pattern = (
-        u(r"\u0001AppName\u0000(.*)\u0000"),                               # groups[0]  appname
-        u(r"\u0001exe\u0000(.*)\u0000"),                                   # groups[1]  exe
-        u(r"\u0001StartDir\u0000(.*)\u0000"),                              # groups[2]  startdir
-        u(r"\u0001icon\u0000(.*)\u0000"),                                  # groups[3]  icon
-        u(r"\u0001ShortcutPath\u0000(.*)\u0000"),                          # groups[4]  shortcut path
-        u(r"\u0001LaunchOptions\u0000(.*)\u0000"),                         # groups[5]  launch options
-        u(r"\u0002IsHidden\u0000(\u0000|\u0001)(?:\u0000){3}"),            # groups[6]  hidden
-        u(r"\u0002AllowDesktopConfig\u0000(\u0000|\u0001)(?:\u0000){3}"),  # groups[7]  allow_desktop_config
-        u(r"\u0002OpenVR\u0000(\u0000|\u0001)(?:\u0000){3}"),              # groups[8]  open_vr
-        u(r"\u0002LastPlayTime\u0000(.{4})"),                              # groups[9]  last_play_time
-        u(r"\u0000tags\u0000(.*)"),                                        # groups[10] tags
-        u(r"\u0008"),                                                      # end
-    )
+    # pattern = (
+    #     u(r"\u0001AppName\u0000(.*)\u0000"),                               # groups[0]  appname
+    #     u(r"\u0001exe\u0000(.*)\u0000"),                                   # groups[1]  exe
+    #     u(r"\u0001StartDir\u0000(.*)\u0000"),                              # groups[2]  startdir
+    #     u(r"\u0001icon\u0000(.*)\u0000"),                                  # groups[3]  icon
+    #     u(r"\u0001ShortcutPath\u0000(.*)\u0000"),                          # groups[4]  shortcut path
+    #     u(r"\u0001LaunchOptions\u0000(.*)\u0000"),                         # groups[5]  launch options
+    #     u(r"\u0002IsHidden\u0000(\u0000|\u0001)(?:\u0000){3}"),            # groups[6]  hidden
+    #     u(r"\u0002AllowDesktopConfig\u0000(\u0000|\u0001)(?:\u0000){3}"),  # groups[7]  allow_desktop_config
+    #     u(r"\u0002OpenVR\u0000(\u0000|\u0001)(?:\u0000){3}"),              # groups[8]  open_vr
+    #     u(r"\u0002LastPlayTime\u0000(.{4})"),                              # groups[9]  last_play_time
+    #     u(r"\u0000tags\u0000(.*)"),                                        # groups[10] tags
+    #     u(r"\u0008"),                                                      # end
+    # )
+    pattern = (u(r"")+
+        u(r"\u0001AppName\u0000(.*)\u0000")+                               # groups[0]  appname
+        u(r"\u0001exe\u0000(.*)\u0000")+                                   # groups[1]  exe
+        u(r"\u0001StartDir\u0000(.*)\u0000")+                              # groups[2]  startdir
+        u(r"\u0001icon\u0000(.*)\u0000")+                                  # groups[3]  icon
+        u(r"\u0001ShortcutPath\u0000(.*)\u0000")+                          # groups[4]  shortcut path
+        u(r"\u0001LaunchOptions\u0000(.*)\u0000")+                         # groups[5]  launch options
+        u(r"\u0002IsHidden\u0000(\u0000|\u0001)(?:\u0000){3}")+            # groups[6]  hidden
+        u(r"\u0002AllowDesktopConfig\u0000(\u0000|\u0001)(?:\u0000){3}")+  # groups[7]  allow_desktop_config
+        u(r"\u0002OpenVR\u0000(\u0000|\u0001)(?:\u0000){3}")+              # groups[8]  open_vr
+        u(r"\u0002LastPlayTime\u0000(.{4})")+                              # groups[9]  last_play_time
+        # u(r"\u0002LastPlayTime\u0000(.*)\u0000")+                              # groups[9]  last_play_time
+        u(r"\u0000tags\u0000(.*)")+                                        # groups[10] tags
+        u(r"\u0008") )                                                     # end
+    # pattern = r
     match = re.match(pattern, string, re.IGNORECASE)
     if match:
       # The 'groups' that are returned by the match should be the data
       # contained in the file. Now just make a Shortcut out of that data
       groups = match.groups()
+      print("Appname:",groups[0])
+      print("Exe:",groups[1])
+      print("Startdir:",groups[2])
+      print("Icon:",groups[3])
+      print("Shortcut Path:",groups[4])
+      print("Launch Options:",groups[5])
+      print("Hidden:",groups[6])
+      print("Allow_Desktop_Config:",groups[7])
+      print("Open_Vr:",groups[8])
+      print("Last Play Time:",groups[9])
+      print("Tags:",groups[10])
       return Shortcut(
           groups[0],
           groups[1],
@@ -85,7 +111,7 @@ class ShortcutParser(object):
           groups[6] == '\x01',
           groups[7] == '\x01',
           groups[8] == '\x01',
-          struct.unpack('<i', groups[9])[0],
+          struct.unpack('<i', bytearray(groups[9],"utf-8"))[0],
           self.match_tags_string(groups[10])
       )
     else:

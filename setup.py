@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
   name='pysteam',
-  version='1.1.0-b2',
+  version='1.1.0-b3',
   description='Python library to work with Steam',
   url='http://github.com/scottrice/pysteam',
   author='Scott Rice',
@@ -20,7 +20,7 @@ setup(
   test_suite='nose.collector',
   tests_require=[
     'nose',
-    'parameterized',
+    'nose_parameterized',
     'mock',
   ],
 )
