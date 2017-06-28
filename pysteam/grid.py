@@ -3,7 +3,7 @@
 import os
 import shutil
 
-import paths
+from . import paths
 
 VALID_EXTENSIONS = [
   '.png',
@@ -12,13 +12,13 @@ VALID_EXTENSIONS = [
   '.tga',
 ]
 
-VALID_EXTENSIONS_WITHOUT_DOT = map(lambda ext: ext[1:], VALID_EXTENSIONS)
+VALID_EXTENSIONS_WITHOUT_DOT = [ext[1:] for ext in VALID_EXTENSIONS]
 
 def is_valid_extension(extension):
   """Returns True is `extension` is a valid image extension to be used with
   custom Steam grid images. There are only 4 such extensions - `.png`, `.jpg`,
   `.jpeg`, and `.tga`.
-  
+
   This function will return true even if the parameter `expression` does not
   include the leading '.'"""
   return extension in VALID_EXTENSIONS or \
@@ -26,8 +26,8 @@ def is_valid_extension(extension):
 
 def _valid_custom_image_paths(user_context, app_id):
   parent_dir = paths.custom_images_directory(user_context)
-  possible_filenames = map(lambda ext: str(app_id) + ext, VALID_EXTENSIONS)
-  return map(lambda f: os.path.join(parent_dir, f), possible_filenames)
+  possible_filenames = [str(app_id) + ext for ext in VALID_EXTENSIONS]
+  return [os.path.join(parent_dir, f) for f in possible_filenames]
 
 def has_custom_image(user_context, app_id):
   """Returns True if there exists a custom image for app_id."""
@@ -38,7 +38,7 @@ def get_custom_image(user_context, app_id):
   """Returns the custom image associated with a given app. If there are
   multiple candidate images on disk, one is chosen arbitrarily."""
   possible_paths = _valid_custom_image_paths(user_context, app_id)
-  existing_images = filter(os.path.exists, possible_paths)
+  existing_images = list(filter(os.path.exists, possible_paths))
   if len(existing_images) > 0:
     return existing_images[0]
 
@@ -62,7 +62,7 @@ def set_custom_image(user_context, app_id, image_path):
     img = get_custom_image(user_context, app_id)
     assert(img is not None)
     os.remove(img)
-  
+
   # Set the new image
   parent_dir = paths.custom_images_directory(user_context)
   new_path = os.path.join(parent_dir, app_id + ext)

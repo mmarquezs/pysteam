@@ -38,14 +38,14 @@ class TestSteam(unittest.TestCase):
         custom_steam = steam.Steam(steam_location=custom_temp_dir)
         custom_steam_userdata = custom_steam.userdata_location()
         self.assertIn(custom_temp_dir, custom_steam_userdata)
-        self.assertEquals(os.path.basename(custom_steam_userdata), "userdata")
+        self.assertEqual(os.path.basename(custom_steam_userdata), "userdata")
 
         reg_temp_dir = tempfile.mkdtemp()
         mock_windows_steam_location.return_value = reg_temp_dir
         reg_steam = steam.Steam()
         reg_steam_userdata = reg_steam.userdata_location()
         self.assertIn(reg_temp_dir, reg_steam_userdata)
-        self.assertEquals(os.path.basename(reg_steam_userdata), "userdata")
+        self.assertEqual(os.path.basename(reg_steam_userdata), "userdata")
 
         shutil.rmtree(custom_temp_dir)
         shutil.rmtree(reg_temp_dir)

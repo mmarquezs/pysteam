@@ -11,26 +11,26 @@ Represents the local steam installation.
 import sys
 import os
 
-import user
+from . import user
 
 def _is_mac():
     return sys.platform == 'darwin'
 
 def _is_windows():
     return sys.platform != 'darwin' and 'win' in sys.platform
-    
+
 def _is_linux():
     return sys.platform.startswith('linux')
 
 def _windows_steam_location():
     if not _is_windows():
         return
-    import _winreg as registry
+    import winreg as registry
     key = registry.CreateKey(registry.HKEY_CURRENT_USER,"Software\Valve\Steam")
     return registry.QueryValueEx(key,"SteamPath")[0]
 
 class Steam(object):
-    
+
     def __init__(self, steam_location=None):
         # If no steam_location was provided but we are on Windows, then we can
         # find Steam's location by looking in the registry
@@ -82,6 +82,6 @@ class Steam(object):
         # Any users on the machine will have an entry inside of the userdata
         # folder. As such, the easiest way to find a list of all users on the
         # machine is to just list the folders inside userdata
-        userdirs = filter(self._is_user_directory, os.listdir(self.userdata_location()))
+        userdirs = list(filter(self._is_user_directory, os.listdir(self.userdata_location())))
         # Exploits the fact that the directory is named the same as the user id
-        return map(lambda userdir: user.User(self, int(userdir)), userdirs)
+        return [user.User(self, int(userdir)) for userdir in userdirs]

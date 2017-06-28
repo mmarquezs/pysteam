@@ -65,7 +65,7 @@ class User(object):
             parsed_shortcuts = []
         if parsed_shortcuts == None:
             # TODO: Raise a decent error
-            print "Parsing error on file: %s" % file
+            print(("Parsing error on file: %s" % file))
             parsed_shortcuts = []
         return parsed_shortcuts
 
@@ -78,7 +78,7 @@ class User(object):
     def shortcuts_file(self):
         """Returns a path to this users shortcuts.vdf file"""
         return os.path.join(self._user_config_directory(), "shortcuts.vdf")
-    
+
     def grid_directory(self):
         """Returns a path to this users grid image directory, where custom
         grid images are stored"""
